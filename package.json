@@ -18,6 +18,6 @@
   },
   "homepage": "",
   "dependencies": {
-    "request": "^2.70.0"
+    "unofficial-sense": "^1.1.4"
   }
 }
