@@ -3,12 +3,12 @@
 # From DOS prompt type (git update-index --chmod=+x un-installAsService.sh) to make this file executable.
 # set -e  <-This will cause script to end on first error with error code
 echo "un-install service will stop and remove this app as a service starts now..."
-echo "Stop service -> systemctl stop SensePower.service"
-sudo systemctl stop SensePower.service
-echo "Disable servers so it will not start on reboot ->systemctl disable SensePower.service"
-sudo systemctl disable SensePower.service
-echo "Remove the systemd service file -> rm /etc/systemd/system/SensePower.service"
-sudo rm /etc/systemd/system/SensePower.service
-echo "Remove D-Bus config file sudo rm /etc/dbus-1/system.d/SensePower.conf"
-sudo rm /etc/dbus-1/system.d/SensePower.conf
+echo "Stop service -> systemctl stop SensePowerGauge.service"
+sudo systemctl stop SensePowerGauge.service
+echo "Disable servers so it will not start on reboot ->systemctl disable SensePowerGauge.service"
+sudo systemctl disable SensePowerGauge.service
+echo "Remove the systemd service file -> rm /etc/systemd/system/SensePowerGauge.service"
+sudo rm /etc/systemd/system/SensePowerGauge.service
+echo "Remove D-Bus config file sudo rm /etc/dbus-1/system.d/SensePowerGauge.conf"
+sudo rm /etc/dbus-1/system.d/SensePowerGauge.conf
 echo "un-instal shell is complete. Reboot server to stop service."

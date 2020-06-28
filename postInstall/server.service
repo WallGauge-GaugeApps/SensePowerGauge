@@ -1,5 +1,5 @@
 [Unit]
-Description=SensePower
+Description=SensePowerGauge
 Wants=gdtMan.service
 Wants=bluetooth.service
 After=gdtMan.service
@@ -7,18 +7,19 @@ After=bluetooth.service
 
 [Service]
 Type=dbus
-BusName=com.SensePower
-ExecStart=/usr/local/bin/node /opt/rGauge/gList/SensePower/app.js
+BusName=com.SensePowerGauge
+ExecStart=/usr/local/bin/node /opt/rGauge/gList/SensePowerGauge/app.js
 Restart=on-failure
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=SensePower
+SyslogIdentifier=SensePowerGauge
 User=rgservice
 Group=irdclient
 Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 Environment=NODE_ENV=production
 Environment=NODE_PATH=/opt/rGauge/.npm-global/lib/node_modules
-WorkingDirectory=/opt/rGauge/gList/SensePower
+Environment=OPENSSL_CONF=/opt/rGauge/gList/SensePowerGauge/postInstall/opensslMod.cnf
+WorkingDirectory=/opt/rGauge/gList/SensePowerGauge
 TimeoutSec=180
 
 [Install]
