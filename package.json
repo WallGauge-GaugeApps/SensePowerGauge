@@ -1,0 +1,23 @@
+{
+  "name": "sense-power-4gauge",
+  "version": "5.1.0",
+  "description": "Sends data to RG-wallhang wirelessly over infrared",
+  "main": "app.js",
+  "scripts": {
+    "test": "",
+    "postinstall": "./postInstall/installAsService.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WallGauge-GaugeApps/sbPowerGauge.git"
+  },
+  "author": "John Rucker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://WallGauge.com"
+  },
+  "homepage": "",
+  "dependencies": {
+    "request": "^2.70.0"
+  }
+}

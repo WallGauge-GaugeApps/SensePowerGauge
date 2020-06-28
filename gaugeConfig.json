@@ -1,0 +1,11 @@
+{
+    "descripition":"Sense Power 4 Gauge",
+    "uuid":"efca05d4-6e61-43dc-81b1-55fc1dc680ac",
+    "dBusName":"com.SensePower",
+    "calibrationTable": [[0,16],[10,76],[20,136],[30,195],[40,255],[50,314],[60,374],[70,435],[80,495],[90,555],[100,614]],
+    "gaugeIrAddress":"11",
+    "battLifeInDays":"382",
+    "battLastReplaced":"",
+    "gaugeURL":"https://home.sense.com/now",
+    "kwhCost":"13.31"
+}

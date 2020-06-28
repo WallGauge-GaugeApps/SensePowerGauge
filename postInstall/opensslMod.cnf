@@ -1,0 +1,5 @@
+
+.include /usr/lib/ssl/openssl.cnf
+[system_default_sect]
+MinProtocol = TLSv1.2
+CipherString = DEFAULT@SECLEVEL=1
