@@ -1,0 +1,5 @@
+{
+"descripition":"Solar Power",
+"calibrationTable": [[0,14],[10000,615]],
+"gaugeIrAddress":"18"
+}

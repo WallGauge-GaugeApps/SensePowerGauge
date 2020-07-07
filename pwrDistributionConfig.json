@@ -1,0 +1,5 @@
+{
+"descripition":"Power Distribution",
+"calibrationTable": [[-10000,14],[0,300],[10000,615]],
+"gaugeIrAddress":"19"
+}
