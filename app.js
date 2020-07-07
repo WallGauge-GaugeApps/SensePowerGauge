@@ -28,7 +28,7 @@ myAppMan.on('Update', () => {
     myAppMan.setGaugeStatus('Config updated received. Please wait, may take up to 5 minutes to reload gauge objects. ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
     // console.log('The webBoxIP = ' + myAppMan.config.webBoxIP);
     // solarData = new sunnyBoyWebBox(myAppMan.config.webBoxIP);
-    getSolarData();
+    // getSolarData();
 });
 
 var randomStart = getRandomInt(5000, 60000);
