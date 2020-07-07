@@ -1,7 +1,7 @@
 {
-    "descripition":"Sense Power Gauge (4 gauges)",
+    "descripition":"Sense Power (4 gauges)",
     "uuid":"efca05d4-6e61-43dc-81b1-55fc1dc680ac",
-    "dBusName":"com.SensePower",
+    "dBusName":"com.SensePowerGauge",
     "calibrationTable": [[0,16],[10000,435],[60000,614]],
     "gaugeIrAddress":"16",
     "battLifeInDays":"360",
