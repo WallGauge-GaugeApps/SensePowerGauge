@@ -6,7 +6,7 @@ const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
 const slrPwrGC = require('./secondaryGauges/solarPowerConfig.json');
 const rnwblPrcntGC = require('./secondaryGauges/renewablePercent.json');
 
-const tmpAct = require('./creds.json');
+// const tmpAct = require('./creds.json');
 
 overrideLogging();
 
