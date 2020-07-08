@@ -27,7 +27,8 @@ console.log('__________________ App Config follows __________________');
 console.dir(myAppMan.config, { depth: null });
 console.log('________________________________________________________');
 
-var sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW)
+var sense = null;
+
 const gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
 const gaugeSlrPwr = new irTransmitter(slrPwrGC.gaugeIrAddress, slrPwrGC.calibrationTable);
 const gaugeRnwblPrcnt = new irTransmitter(rnwblPrcntGC.gaugeIrAddress, rnwblPrcntGC.calibrationTable);
@@ -96,8 +97,7 @@ function getTrend() {
 };
 
 setTimeout(() => {
-    sense = new SenseData(tmpAct.email, tmpAct.password);
-
+    sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW)
     sense.on('authenticated', () => {
         console.log('GDT Authenticated with sense!')
         if (firstRun) startPoller();
