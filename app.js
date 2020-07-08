@@ -39,6 +39,24 @@ myAppMan.on('Update', () => {
     // getSolarData();
 });
 
+myAppMan.on('userPW', () => {
+    console.log('A new user PW event received.');
+    if (myAppMan.userID != 'notSet' && myAppMan.userPW != 'notSet') {
+        console.log('Received new user ID and Password.  Getting new keys...');
+        myAppMan.setGaugeStatus('Received new user ID and Password.');
+        var objToSave = {
+            userID: myAppMan.userID,
+            userPW: myAppMan.userPW
+        };
+        myAppMan.saveItem(objToSave);
+    } else {
+        console.log('Login ID and Password must both be set.  Enter login ID first then password. Try agian in that order.');
+        myAppMan.setGaugeStatus('Login ID and Password must both be set.  Enter login ID first then password. Try agian in that order.');
+    };
+    myAppMan.teslaUserID = 'notSet';
+    myAppMan.teslaUserPW = 'notSet';
+});
+
 console.log('First data call will occur in ' + (randomStart / 1000).toFixed(2) + ' seconds.');
 console.log('When a Sense connection is established a poller will open and close a web socket every 1 minute, read trend data every ' + getTrendInterval + ' minutes, and re-authenticate every ' + reconnectInterval + ' minutes.');
 

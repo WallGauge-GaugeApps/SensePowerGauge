@@ -7,5 +7,6 @@
     "battLifeInDays":"360",
     "battLastReplaced":"",
     "gaugeURL":"https://home.sense.com/now",
-    "kwhCost":"13.31"
+    "userID":"notSet",
+    "userPW":"notSet"
 }
