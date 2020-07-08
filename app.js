@@ -1,6 +1,11 @@
 // const sunnyBoyWebBox = require('./dataGetter/sunnyboyWebBoxClass.js');
 const SenseData = require('senseDataGetter');
 const MyAppMan = require('./MyAppManager.js');
+const irTransmitter = require('irdtxclass');
+const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
+const slrPwrGC = require('./secondaryGauges/solarPowerConfig.json');
+const rnwblPrcntGC = require('./secondaryGauges/renewablePercent.json');
+
 const tmpAct = require('./creds.json');
 
 overrideLogging();
@@ -15,14 +20,16 @@ const getTrendInterval = 10;     // in minutes  10
 var nextReconnectInterval = reconnectInterval;
 var nextGetTrendInterval = getTrendInterval;
 var mainPoller = null;
-
-const getDataInterveral = 1;   // Time in minutes
+var randomStart = getRandomInt(5000, 60000);
 
 console.log('__________________ App Config follows __________________');
 console.dir(myAppMan.config, { depth: null });
 console.log('________________________________________________________');
-var sense = null
+
 var sense = new SenseData(tmpAct.email, tmpAct.password)
+const gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
+const gaugeSlrPwr = new irTransmitter(slrPwrGC.gaugeIrAddress, slrPwrGC.calibrationTable);
+const gaugeRnwblPrcnt = new irTransmitter(rnwblPrcntGC.gaugeIrAddress, rnwblPrcntGC.calibrationTable);
 
 myAppMan.on('Update', () => {
     console.log('New update event has fired.  Reloading gauge objects...');
@@ -32,7 +39,6 @@ myAppMan.on('Update', () => {
     // getSolarData();
 });
 
-var randomStart = getRandomInt(5000, 60000);
 console.log('First data call will occur in ' + (randomStart / 1000).toFixed(2) + ' seconds.');
 console.log('When a Sense connection is established a poller will open and close a web socket every 1 minute, read trend data every ' + getTrendInterval + ' minutes, and re-authenticate every ' + reconnectInterval + ' minutes.');
 
@@ -119,6 +125,9 @@ setTimeout(() => {
             myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
             inAlert = false;
         };
+        gaugePwrDstrbtn.sendValue(sense.power.gridWatts);
+        gaugeRnwblPrcnt.sendValue(solarPowered);
+        gaugeSlrPwr.sendValue(sense.power.solarWatts);
     });
 
 }, randomStart);
