@@ -1,24 +1,23 @@
 const AppMan = require('app-manager');
 
-class myAppManager extends AppMan{
-    bleMyConfig(){
-        console.log('Setting up sbPowerGauge specfic characteristics and config.'); 
-        var webBoxIp = this.bPrl.Characteristic('00000010-fe9e-4f7b-b56a-5f8294c6d817', 'webBoxIp', ["encrypt-read","encrypt-write"]);
-
-        webBoxIp.on('WriteValue', (device, arg1)=>{
-            console.log(device + ', has set new IP Address of ' + arg1);
-            webBoxIp.setValue(arg1);
-            var x = arg1.toString('utf8');
-            this.saveItem({webBoxIP:x});        //this will add {varName : Value} to this.config.  In this case to access the webBoxIP use this.config.webBoxIP
+class myAppManager extends AppMan {
+    bleMyConfig() {
+        console.log('Setting up Sene Power gauge specfic characteristics and config.');
+        this.senseUserID = 'notSet';
+        var senseUser = this.bPrl.Characteristic('b3001340-47e4-4ecd-8e4e-15edd5a89013', 'senseUser', ["encrypt-read", "encrypt-write"]);
+        senseUser.on('WriteValue', (device, arg1) => {
+            console.log(device + ', has set new sense user ID.');
+            this.senseUserID = arg1.toString('utf8');
+            this.emit('senseUserID', this.senseUserID);
         });
 
-        webBoxIp.on('ReadValue', (device)=>{
-            console.log(device + ' has connected and is reading wbBoxIP');
-            webBoxIp.setValue(this.config.webBoxIP);
-            return (this.config.webBoxIP);
+        this.senseUserPW = 'notSet';
+        var sensePW = this.bPrl.Characteristic('459e018b-5379-4799-88f3-e76b1b9e37a2', 'sensePW', ["encrypt-read", "encrypt-write"]);
+        sensePW.on('WriteValue', (device, arg1) => {
+            console.log(device + ', has set new sense user PW.');
+            this.senseUserPW = arg1.toString('utf8');
+            this.emit('senseUserPW', this.senseUserPW);
         });
-
-        webBoxIp.setValue(this.config.webBoxIP);
     };
 };
 

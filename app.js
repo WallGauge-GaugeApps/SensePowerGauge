@@ -125,9 +125,9 @@ setTimeout(() => {
             myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
             inAlert = false;
         };
-        gaugePwrDstrbtn.sendValue(sense.power.gridWatts);
         gaugeRnwblPrcnt.sendValue(solarPowered);
         gaugeSlrPwr.sendValue(sense.power.solarWatts);
+        gaugePwrDstrbtn.sendValue(sense.power.gridWatts);
     });
 
 }, randomStart);
