@@ -119,7 +119,7 @@ setTimeout(() => {
     sense.on('notAuthenticated', () => {
         console.log('Please check your sense login ID and Password.');
         clearInterval(mainPoller);
-        myAppMan.setGaugeStatus('Error not authenticated with Sense Home Monitor at ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString() + ' -> ' + errTxt);
+        myAppMan.setGaugeStatus('Error not authenticated with Sense Home Monitor at ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString() );
         if (inAlert == false) {
             myAppMan.sendAlert({ [myAppMan.config.descripition]: "1" });
             inAlert = true;
