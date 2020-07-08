@@ -38,7 +38,8 @@ myAppMan.on('Update', () => {
     myAppMan.setGaugeStatus('Config updated received. Please wait, may take up to 5 minutes to reload gauge objects. ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
     clearInterval(mainPoller);
     console.log('Re-Init senseData with new config...');
-    sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW)
+    sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW);
+    setupSenseEvents();
 });
 
 myAppMan.on('userPW', () => {
@@ -96,8 +97,7 @@ function getTrend() {
         });
 };
 
-setTimeout(() => {
-    sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW)
+function setupSenseEvents() {
     sense.on('authenticated', () => {
         console.log('GDT Authenticated with sense!')
         if (firstRun) startPoller();
@@ -119,7 +119,7 @@ setTimeout(() => {
     sense.on('notAuthenticated', () => {
         console.log('Please check your sense login ID and Password.');
         clearInterval(mainPoller);
-        myAppMan.setGaugeStatus('Error not authenticated with Sense Home Monitor at ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString() );
+        myAppMan.setGaugeStatus('Error not authenticated with Sense Home Monitor at ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
         if (inAlert == false) {
             myAppMan.sendAlert({ [myAppMan.config.descripition]: "1" });
             inAlert = true;
@@ -148,6 +148,61 @@ setTimeout(() => {
         gaugeSlrPwr.sendValue(sense.power.solarWatts);
         gaugePwrDstrbtn.sendValue(sense.power.gridWatts);
     });
+};
+
+setTimeout(() => {
+    sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW)
+    setupSenseEvents();
+    // sense.on('authenticated', () => {
+    //     console.log('GDT Authenticated with sense!')
+    //     if (firstRun) startPoller();
+    //     console.log('Getting trend data...');
+    //     sense.getTrends('week')
+    //         .then((data) => {
+    //             solarPowered = data.solar_powered
+    //             console.log('This week ' + solarPowered + '% of the power was from renewable energy.');
+    //             if (firstRun) {
+    //                 sense.openWebSocket();
+    //                 firstRun = false;
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.error('Error getTrends after authenticated', err);
+    //         })
+    // });
+
+    // sense.on('notAuthenticated', () => {
+    //     console.log('Please check your sense login ID and Password.');
+    //     clearInterval(mainPoller);
+    //     myAppMan.setGaugeStatus('Error not authenticated with Sense Home Monitor at ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString() );
+    //     if (inAlert == false) {
+    //         myAppMan.sendAlert({ [myAppMan.config.descripition]: "1" });
+    //         inAlert = true;
+    //     };
+    // });
+
+    // sense.on('power', () => {
+    //     console.log((new Date()).toLocaleTimeString() +
+    //         ' | Home Load:' + sense.power.netWatts +
+    //         ', Solar In: ' + sense.power.solarWatts +
+    //         ', Grid In: ' + sense.power.gridWatts +
+    //         ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.');
+    //     sense.closeWebSoc();
+
+    //     myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
+    //         sense.power.solarWatts + " solar, " +
+    //         sense.power.gridWatts + " grid, " +
+    //         solarPowered + " solar%, " +
+    //         (new Date()).toLocaleTimeString());
+    //     myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
+    //     if (inAlert == true) {
+    //         myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
+    //         inAlert = false;
+    //     };
+    //     gaugeRnwblPrcnt.sendValue(solarPowered);
+    //     gaugeSlrPwr.sendValue(sense.power.solarWatts);
+    //     gaugePwrDstrbtn.sendValue(sense.power.gridWatts);
+    // });
 
 }, randomStart);
 
