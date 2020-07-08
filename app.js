@@ -11,12 +11,13 @@ const tmpAct = require('./creds.json');
 overrideLogging();
 
 const myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.json', false);
+
+const reconnectInterval = 60;    // in minutes  60
+const getTrendInterval = 10;     // in minutes  10
 var inAlert = false;
 var firstRun = true;
 var solarPowered = null;
 var minCount = 0;
-const reconnectInterval = 60;    // in minutes  60
-const getTrendInterval = 10;     // in minutes  10
 var nextReconnectInterval = reconnectInterval;
 var nextGetTrendInterval = getTrendInterval;
 var mainPoller = null;
@@ -26,7 +27,7 @@ console.log('__________________ App Config follows __________________');
 console.dir(myAppMan.config, { depth: null });
 console.log('________________________________________________________');
 
-var sense = new SenseData(tmpAct.email, tmpAct.password)
+var sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW)
 const gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
 const gaugeSlrPwr = new irTransmitter(slrPwrGC.gaugeIrAddress, slrPwrGC.calibrationTable);
 const gaugeRnwblPrcnt = new irTransmitter(rnwblPrcntGC.gaugeIrAddress, rnwblPrcntGC.calibrationTable);
@@ -34,9 +35,9 @@ const gaugeRnwblPrcnt = new irTransmitter(rnwblPrcntGC.gaugeIrAddress, rnwblPrcn
 myAppMan.on('Update', () => {
     console.log('New update event has fired.  Reloading gauge objects...');
     myAppMan.setGaugeStatus('Config updated received. Please wait, may take up to 5 minutes to reload gauge objects. ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
-    // console.log('The webBoxIP = ' + myAppMan.config.webBoxIP);
-    // solarData = new sunnyBoyWebBox(myAppMan.config.webBoxIP);
-    // getSolarData();
+    clearInterval(mainPoller);
+    console.log('Re-Init senseData with new config...');
+    sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW)
 });
 
 myAppMan.on('userPW', () => {
