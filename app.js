@@ -111,7 +111,7 @@ setTimeout(() => {
         myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
             sense.power.solarWatts + " solar, " +
             sense.power.gridWatts + " grid, " +
-            sense.ppower.solarPowered + " solar%, " +
+            sense.power.solarPowered + " solar%, " +
             (new Date()).toLocaleTimeString());
         myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
         if (inAlert == true) {
