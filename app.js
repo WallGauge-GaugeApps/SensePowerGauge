@@ -91,9 +91,13 @@ setTimeout(() => {
     });
 
     sense.on('notAuthenticated', () => {
-        console.log('Please check your sense login ID and Password.')
+        console.log('Please check your sense login ID and Password.');
         clearInterval(mainPoller);
-        //Need to send an alert to gdtMan
+        myAppMan.setGaugeStatus('Error not authenticated with Sense Home Monitor at ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString() + ' -> ' + errTxt);
+        if (inAlert == false) {
+            myAppMan.sendAlert({ [myAppMan.config.descripition]: "1" });
+            inAlert = true;
+        };
     });
 
     sense.on('power', () => {
@@ -103,9 +107,22 @@ setTimeout(() => {
             ', Grid In: ' + sense.power.gridWatts +
             ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.');
         sense.closeWebSoc();
+
+        myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
+            sense.power.solarWatts + " solar, " +
+            sense.power.gridWatts + " grid, " +
+            sense.ppower.solarPowered + " solar%, " +
+            (new Date()).toLocaleTimeString());
+        myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
+        if (inAlert == true) {
+            myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
+            inAlert = false;
+        };
     });
 
 }, randomStart);
+
+
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
