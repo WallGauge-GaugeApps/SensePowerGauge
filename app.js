@@ -8,6 +8,7 @@ overrideLogging();
 const myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.json', false);
 var inAlert = false;
 var firstRun = true;
+var solarPowered = null;
 var minCount = 0;
 const reconnectInterval = 60;    // in minutes  60
 const getTrendInterval = 10;     // in minutes  10
@@ -111,7 +112,7 @@ setTimeout(() => {
         myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
             sense.power.solarWatts + " solar, " +
             sense.power.gridWatts + " grid, " +
-            sense.power.solarPowered + " solar%, " +
+            solarPowered + " solar%, " +
             (new Date()).toLocaleTimeString());
         myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
         if (inAlert == true) {
