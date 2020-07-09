@@ -6,8 +6,6 @@ const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
 const slrPwrGC = require('./secondaryGauges/solarPowerConfig.json');
 const rnwblPrcntGC = require('./secondaryGauges/renewablePercent.json');
 
-// const tmpAct = require('./creds.json');
-
 overrideLogging();
 
 const myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.json', false);
@@ -65,6 +63,7 @@ console.log('When a Sense connection is established a poller will open and close
 
 function startPoller() {
     console.log('Starting endless poller.');
+    clearInterval(mainPoller);
     mainPoller = setInterval(() => {
         minCount++;
         if (nextGetTrendInterval == minCount) {
@@ -100,7 +99,7 @@ function getTrend() {
 function setupSenseEvents() {
     sense.on('authenticated', () => {
         console.log('GDT Authenticated with sense!')
-        if (firstRun) startPoller();
+        startPoller();
         console.log('Getting trend data...');
         sense.getTrends('week')
             .then((data) => {
@@ -153,60 +152,7 @@ function setupSenseEvents() {
 setTimeout(() => {
     sense = new SenseData(myAppMan.config.userID, myAppMan.config.userPW)
     setupSenseEvents();
-    // sense.on('authenticated', () => {
-    //     console.log('GDT Authenticated with sense!')
-    //     if (firstRun) startPoller();
-    //     console.log('Getting trend data...');
-    //     sense.getTrends('week')
-    //         .then((data) => {
-    //             solarPowered = data.solar_powered
-    //             console.log('This week ' + solarPowered + '% of the power was from renewable energy.');
-    //             if (firstRun) {
-    //                 sense.openWebSocket();
-    //                 firstRun = false;
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             console.error('Error getTrends after authenticated', err);
-    //         })
-    // });
-
-    // sense.on('notAuthenticated', () => {
-    //     console.log('Please check your sense login ID and Password.');
-    //     clearInterval(mainPoller);
-    //     myAppMan.setGaugeStatus('Error not authenticated with Sense Home Monitor at ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString() );
-    //     if (inAlert == false) {
-    //         myAppMan.sendAlert({ [myAppMan.config.descripition]: "1" });
-    //         inAlert = true;
-    //     };
-    // });
-
-    // sense.on('power', () => {
-    //     console.log((new Date()).toLocaleTimeString() +
-    //         ' | Home Load:' + sense.power.netWatts +
-    //         ', Solar In: ' + sense.power.solarWatts +
-    //         ', Grid In: ' + sense.power.gridWatts +
-    //         ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.');
-    //     sense.closeWebSoc();
-
-    //     myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
-    //         sense.power.solarWatts + " solar, " +
-    //         sense.power.gridWatts + " grid, " +
-    //         solarPowered + " solar%, " +
-    //         (new Date()).toLocaleTimeString());
-    //     myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
-    //     if (inAlert == true) {
-    //         myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
-    //         inAlert = false;
-    //     };
-    //     gaugeRnwblPrcnt.sendValue(solarPowered);
-    //     gaugeSlrPwr.sendValue(sense.power.solarWatts);
-    //     gaugePwrDstrbtn.sendValue(sense.power.gridWatts);
-    // });
-
 }, randomStart);
-
-
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
