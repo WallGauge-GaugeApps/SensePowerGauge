@@ -2,7 +2,7 @@
     "descripition":"Sense Power (4 gauges)",
     "uuid":"efca05d4-6e61-43dc-81b1-55fc1dc680ac",
     "dBusName":"com.SensePowerGauge",
-    "calibrationTable": [[0,16],[10000,435],[60000,614]],
+    "calibrationTable": [[0,15],[1000,55],[2000,95],[3000,135],[4000,175],[5000,215],[6000,255],[7000,294],[8000,334],[9000,373],[10000,413],[20000,453],[30000,493],[40000,533],[50000,574],[60000,614]],
     "gaugeIrAddress":"16",
     "battLifeInDays":"360",
     "battLastReplaced":"",

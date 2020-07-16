@@ -1,5 +1,5 @@
 {
 "descripition":"Renewable percent",
-"calibrationTable": [[0,200],[100,400]],
+"calibrationTable": [[0,0],[10,30],[20,57],[30,83],[40,108],[50,133],[60,159],[70,184],[80,209],[90,235],[100,263]],
 "gaugeIrAddress":"17"
 }
