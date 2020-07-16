@@ -129,13 +129,13 @@ function setupSenseEvents() {
         console.log((new Date()).toLocaleTimeString() +
             ' | Home Load:' + sense.power.netWatts +
             ', Solar In: ' + sense.power.solarWatts +
-            ', Grid In: ' + sense.power.gridWatts +
+            ', Grid In: ' + sense.power.gridWatts * -1 +
             ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.');
         sense.closeWebSoc();
 
         myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
             sense.power.solarWatts + " solar, " +
-            sense.power.gridWatts + " grid, " +
+            sense.power.gridWatts * -1+ " grid, " +
             solarPowered + " solar%, " +
             (new Date()).toLocaleTimeString());
         myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
@@ -145,7 +145,7 @@ function setupSenseEvents() {
         };
         gaugeRnwblPrcnt.sendValue(solarPowered);
         gaugeSlrPwr.sendValue(sense.power.solarWatts);
-        gaugePwrDstrbtn.sendValue(sense.power.gridWatts);
+        gaugePwrDstrbtn.sendValue(sense.power.gridWatts * -1);
     });
 };
 
