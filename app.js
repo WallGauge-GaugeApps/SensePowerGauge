@@ -137,7 +137,7 @@ function setupSenseEvents() {
         );
 
         if (netWatts.length < 5) {
-            if(netWatts.length == 1 && netWatts[1] == -99999){
+            if(netWatts.length == 1 && netWatts[0] == -99999){
                 console.log('Reporting first run values...');
                 netWatts = [];
             };
