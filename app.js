@@ -137,9 +137,24 @@ function setupSenseEvents() {
         );
 
         if (netWatts.length < 5) {
-            if(netWatts.length == 1 && netWatts[0] == -99999){
+            if (netWatts.length == 1 && netWatts[0] == -99999) {
                 console.log('Reporting first run values...');
                 netWatts = [];
+                myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
+                    sense.power.solarWatts + " solar, " +
+                    sense.power.gridWatts * -1 + " grid, " +
+                    solarPowered + " solar%, " +
+                    (new Date()).toLocaleTimeString()
+                );
+                myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
+                if (inAlert == true) {
+                    myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
+                    inAlert = false;
+                };
+                gaugeRnwblPrcnt.sendValue(solarPowered);
+                gaugeSlrPwr.sendValue(sense.power.solarWatts);
+                gaugePwrDstrbtn.sendValue(sense.power.gridWatts * -1);
+
             };
             netWatts.push(sense.power.netWatts);
             solarWatts.push(sense.power.solarWatts);
@@ -150,11 +165,27 @@ function setupSenseEvents() {
             var avgGridWatts = gridWatts.reduce((p, c) => p + c, 0) / gridWatts.length;
 
             console.log((new Date()).toLocaleTimeString() +
-            ' 5 Min Avg | Home Load:' + avgNetWatts +
-            ', Solar In: ' + avgSolarWatts +
-            ', Grid In: ' + avgGridWatts * -1 +
-            ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
-        );
+                ' 5 Min Avg | Home Load:' + avgNetWatts +
+                ', Solar In: ' + avgSolarWatts +
+                ', Grid In: ' + avgGridWatts * -1 +
+                ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
+            );
+
+            myAppMan.setGaugeValue(avgNetWatts, ' watts, ' +
+                avgSolarWatts + " solar, " +
+                avgGridWatts * -1 + " grid, " +
+                solarPowered + " solar%, " +
+                (new Date()).toLocaleTimeString()
+            );
+            myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
+            if (inAlert == true) {
+                myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
+                inAlert = false;
+            };
+            gaugeRnwblPrcnt.sendValue(solarPowered);
+            gaugeSlrPwr.sendValue(avgSolarWatts);
+            gaugePwrDstrbtn.sendValue(avgGridWatts * -1);
+
             netWatts = [];
             solarWatts = [];
             gridWatts = [];
@@ -162,21 +193,7 @@ function setupSenseEvents() {
 
         sense.closeWebSoc();
 
-        myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
-            sense.power.solarWatts + " solar, " +
-            sense.power.gridWatts * -1 + " grid, " +
-            solarPowered + " solar%, " +
-            (new Date()).toLocaleTimeString()
-        );
 
-        myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
-        if (inAlert == true) {
-            myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
-            inAlert = false;
-        };
-        gaugeRnwblPrcnt.sendValue(solarPowered);
-        gaugeSlrPwr.sendValue(sense.power.solarWatts);
-        gaugePwrDstrbtn.sendValue(sense.power.gridWatts * -1);
     });
 };
 
