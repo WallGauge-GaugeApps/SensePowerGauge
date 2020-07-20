@@ -20,6 +20,9 @@ var nextReconnectInterval = reconnectInterval;
 var nextGetTrendInterval = getTrendInterval;
 var mainPoller = null;
 var randomStart = getRandomInt(5000, 60000);
+var netWatts = [];
+var solarWatts = [];
+var gridWatts = [];
 
 console.log('__________________ App Config follows __________________');
 console.dir(myAppMan.config, { depth: null });
@@ -130,14 +133,35 @@ function setupSenseEvents() {
             ' | Home Load:' + sense.power.netWatts +
             ', Solar In: ' + sense.power.solarWatts +
             ', Grid In: ' + sense.power.gridWatts * -1 +
-            ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.');
+            ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
+        );
+
+        if (netWatts.length < 5) {
+            netWatts.push(sense.power.netWatts);
+            solarWatts.push(sense.power.solarWatts);
+            gridWatts.push(sense.power.gridWatts);
+        } else {
+            var avgNetWatts = netWatts.reduce((p, c) => p + c, 0) / netWatts.length;
+            var avgSolarWatts = solarWatts.reduce((p, c) => p + c, 0) / solarWatts.length;
+            var avgGridWatts = gridWatts.reduce((p, c) => p + c, 0) / gridWatts.length;
+
+            console.log((new Date()).toLocaleTimeString() +
+            ' 5 Min Avg | Home Load:' + avgNetWatts +
+            ', Solar In: ' + avgSolarWatts +
+            ', Grid In: ' + avgGridWatts * -1 +
+            ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
+        );
+        }
+
         sense.closeWebSoc();
 
         myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
             sense.power.solarWatts + " solar, " +
-            sense.power.gridWatts * -1+ " grid, " +
+            sense.power.gridWatts * -1 + " grid, " +
             solarPowered + " solar%, " +
-            (new Date()).toLocaleTimeString());
+            (new Date()).toLocaleTimeString()
+        );
+
         myAppMan.setGaugeStatus('Okay, ' + (new Date()).toLocaleTimeString() + ', ' + (new Date()).toLocaleDateString());
         if (inAlert == true) {
             myAppMan.sendAlert({ [myAppMan.config.descripition]: "0" });
