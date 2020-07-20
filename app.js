@@ -20,7 +20,7 @@ var nextReconnectInterval = reconnectInterval;
 var nextGetTrendInterval = getTrendInterval;
 var mainPoller = null;
 var randomStart = getRandomInt(5000, 60000);
-var netWatts = [];
+var netWatts = [-99999];
 var solarWatts = [];
 var gridWatts = [];
 
@@ -137,6 +137,10 @@ function setupSenseEvents() {
         );
 
         if (netWatts.length < 5) {
+            if(netWatts.length == 1 && netWatts[1] == -99999){
+                console.log('Reporting first run values...');
+                netWatts = [];
+            };
             netWatts.push(sense.power.netWatts);
             solarWatts.push(sense.power.solarWatts);
             gridWatts.push(sense.power.gridWatts);
@@ -151,7 +155,10 @@ function setupSenseEvents() {
             ', Grid In: ' + avgGridWatts * -1 +
             ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
         );
-        }
+            netWatts = [];
+            solarWatts = [];
+            gridWatts = [];
+        };
 
         sense.closeWebSoc();
 
