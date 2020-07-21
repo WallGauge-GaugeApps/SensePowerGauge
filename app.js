@@ -136,7 +136,7 @@ function setupSenseEvents() {
             ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
         );
 
-        if (netWatts.length < 5) {
+        if (netWatts.length < 4) {
             if (netWatts.length == 1 && netWatts[0] == -99999) {
                 console.log('Reporting first run values...');
                 netWatts = [];
