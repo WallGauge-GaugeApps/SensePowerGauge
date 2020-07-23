@@ -24,7 +24,7 @@ var gridWatts = [];
 var sense = null;
 
 console.log('Decrypting encryption key using AWS Master Key....')
-const keyMan = new KeyManger(['ef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+const keyMan = new KeyManger(['JensTitsef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
 
 keyMan.on('keyIsReady', (keyObj) => {
     console.log('Encryption key decrypted and ready for use. Getting encrypted configuation data...');
