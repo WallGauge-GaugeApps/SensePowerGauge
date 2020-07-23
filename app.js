@@ -39,7 +39,7 @@ keyMan.on('Error', ((errTxt, err)=>{
     console.log('retrying in ' + err.retryDelay)
     setTimeout(()=>{
         console.log('Bang we retried...');
-    },err.retryDelay);
+    },err.retryDelay * 1000);
 
 }));
 
