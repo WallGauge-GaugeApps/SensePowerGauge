@@ -29,6 +29,13 @@ const keyMan = new KeyManger(['JensTitsef1c55a2-1808-450c-824a-62556d46b7b5'], '
 keyMan.on('Error', ((errTxt, err)=>{
     console.log('Encryption error: ' + errTxt)
     console.dir(err, {depth:null});
+
+    console.log('We should send the following to gdtMan so it can be logged and then restart if error is restarable...')
+    console.log('This is the text to send to gdtMan -> keyManger Error: ' + err.message);
+    if(err.retryable == true){
+        console.log('We may be able to recover from this error.  Retrying in ' + err.retryDelay);
+    };
+    
 }));
 
 keyMan.on('keyIsReady', (keyObj) => {
