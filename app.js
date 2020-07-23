@@ -24,7 +24,7 @@ var gridWatts = [];
 var sense = null;
 
 console.log('Decrypting encryption key using AWS Master Key....')
-const keyMan = new KeyManger(['JensTitsef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+var keyMan = new KeyManger(['JensTitsef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
 
 keyMan.on('Error', ((errTxt, err)=>{
     console.log('Encryption error: ' + errTxt)
@@ -39,6 +39,7 @@ keyMan.on('Error', ((errTxt, err)=>{
     console.log('retrying in ' + err.retryDelay)
     setTimeout(()=>{
         console.log('Bang we retried...');
+        keyMan = new KeyManger(['JensTitsef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
     },err.retryDelay * 1000);
 
 }));
