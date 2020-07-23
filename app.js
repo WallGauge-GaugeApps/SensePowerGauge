@@ -35,7 +35,12 @@ keyMan.on('Error', ((errTxt, err)=>{
     if(err.retryable == true){
         console.log('We may be able to recover from this error.  Retrying in ' + err.retryDelay);
     };
-    
+
+    console.log('retrying in ' + err.retryDelay)
+    setTimeout(()=>{
+        console.log('Bang we retried...');
+    },err.retryDelay);
+
 }));
 
 keyMan.on('keyIsReady', (keyObj) => {
