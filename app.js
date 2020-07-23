@@ -26,9 +26,9 @@ var sense = null;
 console.log('Decrypting encryption key using AWS Master Key....')
 const keyMan = new KeyManger(['JensTitsef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
 
-keyMan.on('Error', ((err)=>{
-    console.log('Encryption error:')
-    console.log(err);
+keyMan.on('Error', ((errTxt, err)=>{
+    console.log('Encryption error: ' + errTxt)
+    console.dir(err, {depth:null});
 }));
 
 keyMan.on('keyIsReady', (keyObj) => {
