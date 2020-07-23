@@ -29,10 +29,7 @@ setupKeyManEventConsumers()
 
 function setupKeyManEventConsumers() {
     keyMan.on('Error', ((errTxt, err) => {
-        console.log('Encryption error: ' + errTxt)
-        console.dir(err, { depth: null });
-
-        console.log('We should send the following to gdtMan so it can be logged and then restart if error is restarable...')
+        console.log('Error setting up keyManager: ' + errTxt)
         console.log('This is the text to send to gdtMan -> keyManger Error: ' + err.message);
         if (err.retryable == true) {
             console.log('We may be able to recover from this error.  Retrying in ' + err.retryDelay);
@@ -41,10 +38,9 @@ function setupKeyManEventConsumers() {
         console.log('retrying in ' + err.retryDelay)
         setTimeout(() => {
             console.log('Retrying to setup keyManager object...');
-            keyMan = new KeyManger(['JensTitsef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+            keyMan = new KeyManger(['ef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
             setupKeyManEventConsumers();
         }, err.retryDelay * 1000);
-
     }));
 
     keyMan.on('keyIsReady', (keyObj) => {
@@ -224,8 +220,7 @@ function setupKeyManEventConsumers() {
             setupSenseEvents();
         }, randomStart);
     });
-}
-
+};
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
