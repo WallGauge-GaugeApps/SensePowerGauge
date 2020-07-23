@@ -15,7 +15,9 @@ The sense WallGauge is a collection of four gauges on one gauge face.  Each gaug
 
 ### Error indicators
 
-All WallGauges require a [WallGauge.com Gauge Data Transmitter](https://www.wallgauge.com/) (GDT) to run this gauge app and connect to the data source.  At the bottom of the main gauge you will find two error indicators labeled “Check data connection” and “Renew subscription”.
+All WallGauges require a [WallGauge.com Gauge Data Transmitter](https://www.wallgauge.com/) (GDT) to run their gauge app. The GDT gives a gauge app a platform for getting gauge data from the Internet and beaming it (with infrared LEDs) to the WallGauge.  
+
+At the bottom of the main gauge you will find two error indicators labeled “Check data connection” and “Renew subscription”.
 
 - Check data connection. If the GDT is powered off or cannot connect to the data source it will stop sending infrared data to this gauge.  If the gauge does not receive data for 20 minutes it will move the needle to the Check data connection position.  This lets the user know something is wrong with the GDT or the data connection.   Check your wireless network connection and make sure your GDT has access to the Internet.
 - Renew subscription. Each GDT requires a support subscription if this subscription has not been renewed, the GDT will move the needle to the Renew subscription position and stop displaying the gauge value.  Renew this GDT’s subscription or move the gauge to a GDT that has an active subscription and install this gauge app.
