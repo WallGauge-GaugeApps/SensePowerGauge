@@ -28,6 +28,7 @@ const keyMan = new KeyManger(['JensTitsef1c55a2-1808-450c-824a-62556d46b7b5'], '
 
 keyMan.on('keyIsReady', (keyObj) => {
     console.log('Encryption key decrypted and ready for use. Getting encrypted configuation data...');
+    console.dir(keyObj, {depth:null});
     var keys = Object.keys(keyObj);
     const myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.encrypted', true, keyObj[keys[0]]);
     const gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
