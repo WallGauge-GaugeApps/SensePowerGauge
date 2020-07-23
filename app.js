@@ -5,8 +5,15 @@ const irTransmitter = require('irdtxclass');
 const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
 const slrPwrGC = require('./secondaryGauges/solarPowerConfig.json');
 const rnwblPrcntGC = require('./secondaryGauges/renewablePercent.json');
+const KeyManger = require('cipher').keyManager;
 
 overrideLogging();
+
+const keyMan = new KeyManger(['ef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+
+keyMan.on('keyIsReady', (keyObj)=>{
+    console.log('*@*@*@*@*@ master encryption key is ready for use *@*@*@*@*@*@*@*');
+});
 
 const myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.json', false);
 
