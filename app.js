@@ -4,8 +4,7 @@ const irTransmitter = require('irdtxclass');
 const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
 const slrPwrGC = require('./secondaryGauges/solarPowerConfig.json');
 const rnwblPrcntGC = require('./secondaryGauges/renewablePercent.json');
-const KeyManger = require('cipher').keyManager;
-const KeyManger2 = require('cipher').keyManTags;
+const KeyManger = require('cipher').keyManTags;
 
 overrideLogging();
 
@@ -25,8 +24,7 @@ var gridWatts = [];
 var sense = null;
 
 console.log('Decrypting encryption key using AWS Master Key....')
-// var keyMan = new KeyManger(['ef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
-var keyMan = new KeyManger2('encKeyIDJensTits', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
 setupKeyManEventConsumers()
 
 function setupKeyManEventConsumers() {
@@ -42,7 +40,7 @@ function setupKeyManEventConsumers() {
                 }, err.retryDelay * 1000);
             };
         };
-        console.log('This is the text to send to gdtMan -> keyManger Error: ' + errTxt);
+        console.log('This is the text to send to gdtMan -> keyManger ' + errTxt);
 
     }));
 
