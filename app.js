@@ -32,15 +32,18 @@ setupKeyManEventConsumers()
 function setupKeyManEventConsumers() {
     keyMan.on('Error', ((errTxt, err) => {
         console.log('Error setting up keyManager: ' + errTxt)
-        // console.log('This is the text to send to gdtMan -> keyManger Error: ' + err.message);
-        if (err.retryable == true) {
-            console.log('We may be able to recover from this keyManager error.  Retrying in ' + err.retryDelay + ' seconds.');
-            setTimeout(() => {
-                console.log('Retrying to setup keyManager object...');
-                keyMan = new KeyManger(['ef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
-                setupKeyManEventConsumers();
-            }, err.retryDelay * 1000);
+        if (err) {
+            if (err.retryable == true) {
+                console.log('We may be able to recover from this keyManager error.  Retrying in ' + err.retryDelay + ' seconds.');
+                setTimeout(() => {
+                    console.log('Retrying to setup keyManager object...');
+                    keyMan = new KeyManger(['ef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+                    setupKeyManEventConsumers();
+                }, err.retryDelay * 1000);
+            };
         };
+        console.log('This is the text to send to gdtMan -> keyManger Error: ' + errTxt);
+
     }));
 
     keyMan.on('keyIsReady', (keyObj) => {
