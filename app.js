@@ -5,6 +5,7 @@ const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
 const slrPwrGC = require('./secondaryGauges/solarPowerConfig.json');
 const rnwblPrcntGC = require('./secondaryGauges/renewablePercent.json');
 const KeyManger = require('cipher').keyManager;
+const KeyManger2 = require('cipher').keyManTags;
 
 overrideLogging();
 
@@ -25,6 +26,7 @@ var sense = null;
 
 console.log('Decrypting encryption key using AWS Master Key....')
 var keyMan = new KeyManger(['ef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+var keyMan2 = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
 setupKeyManEventConsumers()
 
 function setupKeyManEventConsumers() {
@@ -43,7 +45,6 @@ function setupKeyManEventConsumers() {
 
     keyMan.on('keyIsReady', (keyObj) => {
         console.log('Encryption key decrypted and ready for use. Getting encrypted configuation data...');
-        console.dir(keyObj, { depth: null });
         var keys = Object.keys(keyObj);
         const myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.encrypted', true, keyObj[keys[0]]);
         const gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
