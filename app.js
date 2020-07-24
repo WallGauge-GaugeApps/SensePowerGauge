@@ -32,7 +32,7 @@ setupKeyManEventConsumers()
 function setupKeyManEventConsumers() {
     keyMan.on('Error', ((errTxt, err) => {
         console.log('Error setting up keyManager: ' + errTxt)
-        console.log('This is the text to send to gdtMan -> keyManger Error: ' + err.message);
+        // console.log('This is the text to send to gdtMan -> keyManger Error: ' + err.message);
         if (err.retryable == true) {
             console.log('We may be able to recover from this keyManager error.  Retrying in ' + err.retryDelay + ' seconds.');
             setTimeout(() => {
