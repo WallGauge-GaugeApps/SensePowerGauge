@@ -26,7 +26,7 @@ var sense = null;
 
 console.log('Decrypting encryption key using AWS Master Key....')
 var keyMan = new KeyManger(['ef1c55a2-1808-450c-824a-62556d46b7b5'], '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
-var keyMan2 = new KeyManger2('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+var keyMan2 = new KeyManger2('encKeyIDJensTits', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
 setupKeyManEventConsumers()
 
 function setupKeyManEventConsumers() {
