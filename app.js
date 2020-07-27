@@ -27,15 +27,6 @@ var solarWatts = [];
 var gridWatts = [];
 var sense = null;
 
-sComm.sendError('IPL is underway...');
-sComm.sendError('This is the 2nd Error');
-sComm.sendError('This is the 3rd Error');
-sComm.clearError('IPL is underway...');
-setTimeout(()=>{
-    console.log('Clearing all errors');
-    sComm.clearAllErrors();
-}, 60000)
-
 console.log('Decrypting encryption key using AWS Master Key....')
 var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
 setupKeyManEventConsumers()
@@ -58,6 +49,7 @@ function setupKeyManEventConsumers() {
 
     keyMan.on('keyIsReady', (keyObj) => {
         console.log('Encryption key decrypted and ready for use. Getting encrypted configuation data...');
+        sComm.clearAllErrors();
         var keys = Object.keys(keyObj);
         const myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.encrypted', true, keyObj[keys[0]]);
         const gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
@@ -76,7 +68,7 @@ function setupKeyManEventConsumers() {
         myAppMan.on('userPW', () => {
             console.log('A new user PW event received.');
             if (myAppMan.userID != 'notSet' && myAppMan.userPW != 'notSet') {
-                console.log('Received new user ID and Password.  Getting new keys...');
+                console.log('Received new user ID and Password. ');
                 myAppMan.setGaugeStatus('Received new user ID and Password.');
                 var objToSave = {
                     userID: myAppMan.userID,

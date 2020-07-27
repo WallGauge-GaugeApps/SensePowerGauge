@@ -1,32 +1,36 @@
 const cp = require('child_process');
 const logPrefix = 'cmdLineComm.js | ';
-
-/**
- * The following will read the subscription status of the GDT
- * gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method org.freedesktop.DBus.Properties.GetAll com.gdtMan.gaugeCom
- * Returns:
- * ({'SubscriptionExpired': <false>},)
- * 
- * To send an error to gdtMan use the followng gdbus call
- * gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {'"SensePowerGauge credentials not set":"1"'}
- * To clear the error make same call but with a 0
- * gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {'"SensePowerGauge credentials not set":"0"'}
- */
-// gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method org.freedesktop.DBus.Properties.GetAll com.gdtMan.gaugeCom
 var errorList = [];
+
 class cmdLineCom {
-    constructor(hostName = 'sensePowerGauge') {
-        this.hostName = hostName
+    /**
+     * This class uses the command line util gdbus to set and clear error messages on gdtMan.  Construct the class with the name of the gauge app.  These errors will be visable in the IOS app and WallGauge cloud.
+     * The following will read the subscription status of the GDT (placed here just in case I want to use it in the future)
+     * gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method org.freedesktop.DBus.Properties.GetAll com.gdtMan.gaugeCom
+     *  Returns:
+     *      ({'SubscriptionExpired': <false>},)
+     * 
+     * @param {string} gaugeAppName is the name of this gague app.  For example 'sensePowerGauge'
+     */
+    constructor(gaugeAppName = 'sensePowerGauge') {
+        this.hostName = gaugeAppName
     };
 
-    sendError(errText) {
+    /**
+     * Sends an error over dBus to gdtMan so it can be reported to WallGauge.com cloud and the IOS app.  Please make sure to clear the errors.
+     * @param {string} errText 
+     */
+    sendError(errText = 'error Text Goes here') {
         cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"1"\'}');
         logit('Added ' + errText + ' to list of errors sent to gdtMan.')
         errorList.push(errText);
-        console.dir(errorList)
     };
 
-    clearError(errText) {
+    /**
+     * Clears the last error matching errText. If you call sendError('this is my error'), you can clear that error by calling this method with the same text clearError('this is my error')
+     * @param {*} errText 
+     */
+    clearError(errText = 'error Text Goes here') {
         cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"0"\'}');
         errorList = errorList.filter(val => {
             if (val == errText) {
@@ -36,15 +40,18 @@ class cmdLineCom {
             }
         });
         logit('Removed ' + errText + ' from error list.')
-        console.dir(errorList);
     };
 
+    /**
+     * Clears all outstanding errors for this gauge app.
+     */
     clearAllErrors() {
         errorList.forEach(val => {
             cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + val + '":"0"\'}');
+            logit('Removing error: ' + val);
         });
         errorList = [];
-    }
+    };
 };
 
 function logit(txt = '') {
