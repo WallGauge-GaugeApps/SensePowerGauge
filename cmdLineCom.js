@@ -1,5 +1,5 @@
 const cp = require('child_process');
-
+const logPrefix = 'cmdLineComm.js | ';
 
 /**
  * The following will read the subscription status of the GDT
@@ -18,14 +18,37 @@ class cmdLineCom {
     constructor(hostName = 'sensePowerGauge') {
         this.hostName = hostName
     };
-    
-    sendError(errText){
-        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"'+ this.hostName +' ' + errText +'":"1"\'}');
+
+    sendError(errText) {
+        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"1"\'}');
+        logit('Added ' + errText + ' to list of errors sent to gdtMan.')
+        errorList.push(errText);
+        console.dir(errorList)
     };
 
-    clearError(errText){
-        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"'+ this.hostName +' ' + errText +'":"0"\'}');
+    clearError(errText) {
+        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"0"\'}');
+        errorList = errorList.filter(val => {
+            if (val == errText) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+        logit('Removed ' + errText + ' from error list.')
+        console.dir(errorList);
+    };
+
+    clearAllErrors() {
+        errorList.forEach(val => {
+            cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + val + '":"0"\'}');
+        });
+        errorList = [];
     }
+};
+
+function logit(txt = '') {
+    console.debug(logPrefix + txt);
 };
 
 module.exports = cmdLineCom;

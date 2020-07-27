@@ -28,6 +28,13 @@ var gridWatts = [];
 var sense = null;
 
 sComm.sendError('IPL is underway...');
+sComm.sendError('This is the 2nd Error');
+sComm.sendError('This is the 3rd Error');
+sComm.clearError('IPL is underway...');
+setTimeout(()=>{
+    console.log('Clearing all errors');
+    sComm.clearAllErrors();
+}, 60000)
 
 console.log('Decrypting encryption key using AWS Master Key....')
 var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
