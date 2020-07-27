@@ -5,8 +5,12 @@ const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
 const slrPwrGC = require('./secondaryGauges/solarPowerConfig.json');
 const rnwblPrcntGC = require('./secondaryGauges/renewablePercent.json');
 const KeyManger = require('cipher').keyManTags;
+const SimpleComm = require('./cmdLineCom.js');
+
 
 overrideLogging();
+
+const sComm = new SimpleComm();
 
 const reconnectInterval = 60;    // in minutes  60
 const getTrendInterval = 10;     // in minutes  10
@@ -22,6 +26,8 @@ var netWatts = [-99999];
 var solarWatts = [];
 var gridWatts = [];
 var sense = null;
+
+sComm.sendError('senseDataGetter', 'IPL is underway...');
 
 console.log('Decrypting encryption key using AWS Master Key....')
 var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
