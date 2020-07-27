@@ -15,15 +15,16 @@ const cp = require('child_process');
 // gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method org.freedesktop.DBus.Properties.GetAll com.gdtMan.gaugeCom
 var errorList = [];
 class cmdLineCom {
-    constructor() {
+    constructor(hostName = 'sensePowerGauge') {
+        this.hostName = hostName
     };
     
-    sendError(hostName, errText){
-        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"'+ hostName +' ' + errText +'":"1"\'}');
+    sendError(errText){
+        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"'+ this.hostName +' ' + errText +'":"1"\'}');
     };
 
-    clearError(hostName, errText){
-        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"'+ hostName +' ' + errText +'":"0"\'}');
+    clearError(errText){
+        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"'+ this.hostName +' ' + errText +'":"0"\'}');
     }
 };
 

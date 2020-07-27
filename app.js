@@ -10,7 +10,7 @@ const SimpleComm = require('./cmdLineCom.js');
 
 overrideLogging();
 
-const sComm = new SimpleComm();
+const sComm = new SimpleComm('sensePowerGauge');
 
 const reconnectInterval = 60;    // in minutes  60
 const getTrendInterval = 10;     // in minutes  10
@@ -27,7 +27,7 @@ var solarWatts = [];
 var gridWatts = [];
 var sense = null;
 
-sComm.sendError('senseDataGetter', 'IPL is underway...');
+sComm.sendError('IPL is underway...');
 
 console.log('Decrypting encryption key using AWS Master Key....')
 var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
@@ -46,8 +46,7 @@ function setupKeyManEventConsumers() {
                 }, err.retryDelay * 1000);
             };
         };
-        console.log('This is the text to send to gdtMan -> keyManger ' + errTxt);
-
+        sComm.sendError('keyManger ' + errTxt)
     }));
 
     keyMan.on('keyIsReady', (keyObj) => {
