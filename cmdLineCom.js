@@ -22,10 +22,10 @@ class cmdLineCom {
      */
     sendError(errText = 'error Text Goes here') {
         try {
-        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtManJenTits --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"1"\'}');
-        logit('Added ' + errText + ' to list of errors sent to gdtMan.')
-        errorList.push(errText);
-        } catch (err){
+            cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"1"\'}');
+            logit('Added ' + errText + ' to list of errors sent to gdtMan.')
+            errorList.push(errText);
+        } catch (err) {
             logit('Error with sendError ');
             console.error('Error with sendError ', err);
         };
@@ -36,26 +36,36 @@ class cmdLineCom {
      * @param {*} errText 
      */
     clearError(errText = 'error Text Goes here') {
-        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"0"\'}');
-        errorList = errorList.filter(val => {
-            if (val == errText) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-        logit('Removed ' + errText + ' from error list.')
+        try {
+            cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"0"\'}');
+            errorList = errorList.filter(val => {
+                if (val == errText) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+            logit('Removed ' + errText + ' from error list.')
+        } catch (err) {
+            logit('Error with clearError ');
+            console.error('Error with clearError ', err);
+        };
     };
 
     /**
      * Clears all outstanding errors for this gauge app.
      */
     clearAllErrors() {
-        errorList.forEach(val => {
-            cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + val + '":"0"\'}');
-            logit('Removing error: ' + val);
-        });
-        errorList = [];
+        try {
+            errorList.forEach(val => {
+                cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + val + '":"0"\'}');
+                logit('Removing error: ' + val);
+            });
+            errorList = [];
+        } catch (err) {
+            logit('Error with clearAllErrors ');
+            console.error('Error with clearAllErrors ', err);
+        };
     };
 };
 
