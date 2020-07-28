@@ -21,7 +21,7 @@ class cmdLineCom {
      * @param {string} errText 
      */
     sendError(errText = 'error Text Goes here') {
-        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtMan --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"1"\'}');
+        cp.execSync('/usr/bin/gdbus call --system --dest com.gdtManJenTits --object-path /com/gdtMan --method com.gdtMan.gaugeCom.Alert {\'"' + this.hostName + ' ' + errText + '":"1"\'}');
         logit('Added ' + errText + ' to list of errors sent to gdtMan.')
         errorList.push(errText);
     };

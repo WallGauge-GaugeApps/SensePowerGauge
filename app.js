@@ -31,6 +31,9 @@ console.log('Decrypting encryption key using AWS Master Key....')
 var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
 setupKeyManEventConsumers()
 
+console.log('Testing what happens if gdtMan can not be accessed by sComm');
+sComm.sendError('keyManger ' + 'Test Error to see if we blow')
+
 function setupKeyManEventConsumers() {
     keyMan.on('Error', ((errTxt, err) => {
         console.log('Error setting up keyManager: ' + errTxt)
