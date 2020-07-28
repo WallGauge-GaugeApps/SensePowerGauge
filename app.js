@@ -27,13 +27,9 @@ var solarWatts = [];
 var gridWatts = [];
 var sense = null;
 
-console.log('Decrypting encryption key using AWS Master Key....')
+console.log('Decrypting encryption key using AWS Master Key....');
 var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
-setupKeyManEventConsumers()
-
-console.log('Testing what happens if gdtMan can not be accessed by sComm');
-sComm.sendError('keyManger ' + 'Test Error to see if we blow')
-
+setupKeyManEventConsumers();
 function setupKeyManEventConsumers() {
     keyMan.on('Error', ((errTxt, err) => {
         console.log('Error setting up keyManager: ' + errTxt)
@@ -47,7 +43,7 @@ function setupKeyManEventConsumers() {
                 }, err.retryDelay * 1000);
             };
         };
-        sComm.sendError('keyManger ' + errTxt)
+        sComm.sendError('keyManger ' + errTxt);
     }));
 
     keyMan.on('keyIsReady', (keyObj) => {
