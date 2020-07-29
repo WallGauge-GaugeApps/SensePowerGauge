@@ -6,6 +6,8 @@ After=gdtMan.service
 After=bluetooth.service
 
 [Service]
+Type=dbus
+BusName=com.SensePowerGauge
 ExecStart=/usr/local/bin/node /opt/rGauge/gList/SensePowerGauge/app.js
 Restart=on-failure
 StandardOutput=syslog
