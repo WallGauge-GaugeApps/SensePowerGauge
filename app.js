@@ -4,11 +4,14 @@ const SimpleComm = require('./cmdLineCom.js');
 
 overrideLogging();
 
+console.log('Starting simpleComm to enable interim communications with gdtMan for error reporting...')
 const sComm = new SimpleComm('sensePowerGauge');
 
-console.log('Decrypting encryption key using AWS Master Key....');
+console.log('Establishing secure connection to Amazon Web Service Key Management...');
 var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+
 setupKeyManEventConsumers();
+
 function setupKeyManEventConsumers() {
     keyMan.on('Error', ((errTxt, err) => {
         console.log('Error setting up keyManager: ' + errTxt)
@@ -29,7 +32,6 @@ function setupKeyManEventConsumers() {
         console.log('Encryption key decrypted and ready for use. Getting encrypted configuation data...');
         sComm.clearAllErrors();
         var keys = Object.keys(keyObj);
-        // main(keyObj[keys[0]]);
         startGaugeApp(keyObj[keys[0]]);
     });
 };
@@ -37,7 +39,6 @@ function setupKeyManEventConsumers() {
 function startGaugeApp(encKey){
     new GaugeApp(encKey);
 }
-
 
 /** Overrides console.error, console.warn, and console.debug
  * By placing <#> in front of the log text it will allow us to filter them with systemd
