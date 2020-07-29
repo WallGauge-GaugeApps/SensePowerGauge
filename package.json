@@ -18,7 +18,6 @@
   },
   "homepage": "https://WallGauge.com",
   "dependencies": {
-    "senseDataGetter": "git+https://github.com/WallGauge-GaugeApps/senseDataGetter.git",
-    "cipher": "git+https://github.com/WallGauge/Cipher.git"
+    "senseDataGetter": "git+https://github.com/WallGauge-GaugeApps/senseDataGetter.git"
   }
 }
