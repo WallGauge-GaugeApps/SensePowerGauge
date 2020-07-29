@@ -29,7 +29,7 @@ function setupKeyManEventConsumers() {
         console.log('Encryption key decrypted and ready for use. Getting encrypted configuation data...');
         sComm.clearAllErrors();
         var keys = Object.keys(keyObj);
-        main(keyObj[keys[0]]);
+        // main(keyObj[keys[0]]);
         startGaugeApp(keyObj[keys[0]]);
     });
 };
