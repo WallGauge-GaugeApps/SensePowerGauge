@@ -2,13 +2,17 @@ const GaugeApp = require('./gaugeApp');
 const KeyManger = require('cipher').keyManTags;
 const SimpleComm = require('./cmdLineCom.js');
 
+const gaugeNameForErrorReporting = 'sensePowerGauge';
+const awsCredentials = '/opt/rGauge/certs/awsCredentials.json';
+const awsIamTag = 'encKeyID';
+
 overrideLogging();
 
 console.log('Starting simpleComm to enable interim communications with gdtMan for error reporting...')
-const sComm = new SimpleComm('sensePowerGauge');
+const sComm = new SimpleComm(gaugeNameForErrorReporting);
 
 console.log('Establishing secure connection to Amazon Web Service Key Management...');
-var keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+var keyMan = new KeyManger(awsIamTag, awsCredentials, __dirname + '/cmk.json');
 
 setupKeyManEventConsumers();
 
@@ -20,7 +24,7 @@ function setupKeyManEventConsumers() {
                 console.log('We may be able to recover from this keyManager error.  Retrying in ' + err.retryDelay + ' seconds.');
                 setTimeout(() => {
                     console.log('Retrying to setup keyManager object...');
-                    keyMan = new KeyManger('encKeyID', '/opt/rGauge/certs/awsCredentials.json', __dirname + '/cmk.json');
+                    keyMan = new KeyManger(awsIamTag, awsCredentials, __dirname + '/cmk.json');
                     setupKeyManEventConsumers();
                 }, err.retryDelay * 1000);
             };
@@ -29,7 +33,7 @@ function setupKeyManEventConsumers() {
     }));
 
     keyMan.on('keyIsReady', (keyObj) => {
-        console.log('Encryption key decrypted and ready for use. Getting encrypted configuation data...');
+        console.log('Encryption key decrypted and ready for use.');
         sComm.clearAllErrors();
         var keys = Object.keys(keyObj);
         startGaugeApp(keyObj[keys[0]]);
@@ -37,6 +41,7 @@ function setupKeyManEventConsumers() {
 };
 
 function startGaugeApp(encKey){
+    console.log('Starting Main Gauge App with Encryption...')
     new GaugeApp(encKey);
 }
 

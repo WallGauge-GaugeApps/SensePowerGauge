@@ -1,6 +1,6 @@
 {
   "name": "sense-power-gauge",
-  "version": "5.1.0",
+  "version": "6.0.0",
   "description": "Sends data to RG-wallhang wirelessly over infrared",
   "main": "app.js",
   "scripts": {
