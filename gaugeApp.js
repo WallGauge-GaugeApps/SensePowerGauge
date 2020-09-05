@@ -20,7 +20,7 @@ var solarWatts = [];
 var gridWatts = [];
 var sense = {};
 var myAppMan = {};
-var gaugePwrDstrbtn = {};
+// var gaugePwrDstrbtn = {};
 var gaugeSlrPwr = {};
 var gaugeRnwblPrcnt = {};
 
@@ -39,7 +39,7 @@ class gaugeApp {
             myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.encrypted', true, encryptionKey);
         };
         console.log('Establishing connection for secondary gauges to irTransmitter...');
-        gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
+        // gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
         gaugeSlrPwr = new irTransmitter(slrPwrGC.gaugeIrAddress, slrPwrGC.calibrationTable);
         gaugeRnwblPrcnt = new irTransmitter(rnwblPrcntGC.gaugeIrAddress, rnwblPrcntGC.calibrationTable);
 
@@ -148,7 +148,7 @@ function setupSenseEvents() {
         console.log((new Date()).toLocaleTimeString() +
             ' | Home Load:' + sense.power.netWatts +
             ', Solar In: ' + sense.power.solarWatts +
-            ', Grid In: ' + sense.power.gridWatts * -1 +
+            ', Always On: ' + sense.power.alwaysOn +
             ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
         );
 
@@ -158,7 +158,7 @@ function setupSenseEvents() {
                 netWatts = [];
                 myAppMan.setGaugeValue(sense.power.netWatts, ' watts, ' +
                     sense.power.solarWatts + " solar, " +
-                    sense.power.gridWatts * -1 + " grid, " +
+                    sense.power.alwaysOn + " always on, " +
                     solarPowered + " solar%, " +
                     (new Date()).toLocaleTimeString()
                 );
@@ -169,7 +169,7 @@ function setupSenseEvents() {
                 };
                 gaugeRnwblPrcnt.sendValue(solarPowered);
                 gaugeSlrPwr.sendValue(sense.power.solarWatts);
-                gaugePwrDstrbtn.sendValue(sense.power.gridWatts * -1);
+                // gaugePwrDstrbtn.sendValue(sense.power.gridWatts * -1);
 
             };
             netWatts.push(sense.power.netWatts);
@@ -200,7 +200,7 @@ function setupSenseEvents() {
             };
             gaugeRnwblPrcnt.sendValue(solarPowered);
             gaugeSlrPwr.sendValue(avgSolarWatts);
-            gaugePwrDstrbtn.sendValue(avgGridWatts * -1);
+            // gaugePwrDstrbtn.sendValue(avgGridWatts * -1);
 
             netWatts = [];
             solarWatts = [];
