@@ -183,13 +183,13 @@ function setupSenseEvents() {
             console.log((new Date()).toLocaleTimeString() +
                 ' 5 Min Avg | Home Load:' + avgNetWatts +
                 ', Solar In: ' + avgSolarWatts +
-                ', Grid In: ' + avgGridWatts * -1 +
+                ', Always On: ' + sense.power.alwaysOn  +
                 ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
             );
 
             myAppMan.setGaugeValue(avgNetWatts, ' watts, ' +
                 avgSolarWatts + " solar, " +
-                avgGridWatts * -1 + " grid, " +
+                sense.power.alwaysOn + " always on, " +
                 solarPowered + " solar%, " +
                 (new Date()).toLocaleTimeString()
             );
