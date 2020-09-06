@@ -1,6 +1,6 @@
 {
   "name": "sense-power-gauge",
-  "version": "6.3.0",
+  "version": "6.3.1",
   "description": "Sends data to RG-wallhang wirelessly over infrared",
   "main": "app.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://WallGauge.com",
   "dependencies": {
-    "senseDataGetter": "git+https://github.com/WallGauge-GaugeApps/senseDataGetter.git",
+    "sense-data-getter": "git+https://github.com/WallGauge-GaugeApps/senseDataGetter.git",
     "irdtxclass": "git+https://github.com/WallGauge/irdTxClass.git",
     "app-manager": "git+https://github.com/WallGauge/appManager.git",
     "cipher": "git+https://github.com/WallGauge/Cipher.git"

@@ -1,4 +1,4 @@
-const SenseDataDelegate = require('senseDataGetter');
+const SenseDataDelegate = require('sense-data-getter');
 const MyAppMan = require('./MyAppManager.js');
 const irTransmitter = require('irdtxclass');
 const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
@@ -183,7 +183,7 @@ function setupSenseEvents() {
             console.log((new Date()).toLocaleTimeString() +
                 ' 5 Min Avg | Home Load:' + avgNetWatts +
                 ', Solar In: ' + avgSolarWatts +
-                ', Always On: ' + sense.power.alwaysOn  +
+                ', Always On: ' + sense.power.alwaysOn +
                 ' | ' + solarPowered + '% of the this week\'s power was from renewable energy.'
             );
 
