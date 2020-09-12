@@ -1,7 +1,7 @@
 const SenseDataDelegate = require('sense-data-getter');
 const MyAppMan = require('./MyAppManager.js');
 const irTransmitter = require('irdtxclass');
-const pwrDstrbtnGC = require('./secondaryGauges/pwrDistributionConfig.json');
+const vampireLoad = require('./secondaryGauges/vampireLoad.json');
 const slrPwrGC = require('./secondaryGauges/solarPowerConfig.json');
 const rnwblPrcntGC = require('./secondaryGauges/renewablePercent.json');
 
@@ -20,9 +20,9 @@ var solarWatts = [];
 var gridWatts = [];
 var sense = {};
 var myAppMan = {};
-// var gaugePwrDstrbtn = {};
 var gaugeSlrPwr = {};
 var gaugeRnwblPrcnt = {};
+var gaugeVmpLd = {};
 
 class gaugeApp {
     /**
@@ -39,9 +39,9 @@ class gaugeApp {
             myAppMan = new MyAppMan(__dirname + '/gaugeConfig.json', __dirname + '/modifiedConfig.encrypted', true, encryptionKey);
         };
         console.log('Establishing connection for secondary gauges to irTransmitter...');
-        // gaugePwrDstrbtn = new irTransmitter(pwrDstrbtnGC.gaugeIrAddress, pwrDstrbtnGC.calibrationTable);
         gaugeSlrPwr = new irTransmitter(slrPwrGC.gaugeIrAddress, slrPwrGC.calibrationTable);
         gaugeRnwblPrcnt = new irTransmitter(rnwblPrcntGC.gaugeIrAddress, rnwblPrcntGC.calibrationTable);
+        gaugeVmpLd = new irTransmitter(vampireLoad.gaugeIrAddress, vampireLoad.calibrationTable);
 
         myAppMan.on('Update', () => {
             console.log('New update event has fired.  Reloading gauge objects...');
@@ -169,7 +169,7 @@ function setupSenseEvents() {
                 };
                 gaugeRnwblPrcnt.sendValue(solarPowered);
                 gaugeSlrPwr.sendValue(sense.power.solarWatts);
-                // gaugePwrDstrbtn.sendValue(sense.power.gridWatts * -1);
+                vampireLoad.sendValue(sense.power.alwaysOn);
 
             };
             netWatts.push(sense.power.netWatts);
@@ -200,7 +200,7 @@ function setupSenseEvents() {
             };
             gaugeRnwblPrcnt.sendValue(solarPowered);
             gaugeSlrPwr.sendValue(avgSolarWatts);
-            // gaugePwrDstrbtn.sendValue(avgGridWatts * -1);
+            vampireLoad.sendValue(sense.power.alwaysOn);
 
             netWatts = [];
             solarWatts = [];
