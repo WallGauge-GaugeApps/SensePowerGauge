@@ -169,8 +169,7 @@ function setupSenseEvents() {
                 };
                 gaugeRnwblPrcnt.sendValue(solarPowered);
                 gaugeSlrPwr.sendValue(sense.power.solarWatts);
-                vampireLoad.sendValue(sense.power.alwaysOn);
-
+                gaugeVmpLd.sendValue(sense.power.alwaysOn);
             };
             netWatts.push(sense.power.netWatts);
             solarWatts.push(sense.power.solarWatts);
@@ -200,7 +199,7 @@ function setupSenseEvents() {
             };
             gaugeRnwblPrcnt.sendValue(solarPowered);
             gaugeSlrPwr.sendValue(avgSolarWatts);
-            vampireLoad.sendValue(sense.power.alwaysOn);
+            gaugeVmpLd.sendValue(sense.power.alwaysOn);
 
             netWatts = [];
             solarWatts = [];
