@@ -36,4 +36,4 @@ As stated above we are working on details and permission to sell a gauge based o
 
 ## Gauge Pictures
 
-![pic](./pics/sensePowerGauge.jpg)
+![pic](./pics/sensePowerGauge.png)
